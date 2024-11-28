@@ -18,7 +18,7 @@ O padrão Facade é um padrão de projeto estrutural que fornece uma interface s
 
 O padrão Facade foi utilizado no arquivo "/main.py na classe "App", para reduzir a inicialização de um quiz (Exame e correção) a um único método.
 
-### Template
+### Template Method
 
 O padrão Template Method é um padrão de projeto comportamental que define o esqueleto de um algoritmo, delegando algumas etapas para subclasses. Ele permite que subclasses implementem partes específicas do algoritmo sem alterar sua estrutura geral.
 
