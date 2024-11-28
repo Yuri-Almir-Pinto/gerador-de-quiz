@@ -2,11 +2,11 @@ from models.question import Question
 
 class BaseGradingTemplate:
     def __init__(self, *, limit: int = -1,
-                 pause_after_each_correction: bool = True) -> None:
+                 pause_after_each_correction: bool = True):
         self.limit = limit
-        self.pause_after_each_correction: bool = pause_after_each_correction
+        self.pause_after_each_correction = pause_after_each_correction
 
-    def __call__(self, questions: list[Question]) -> None:
+    def __call__(self, questions: list[Question]):
         self.total = self.limit + 1 if self.limit < len(questions) else len(questions)
         self.questions = questions[:self.total]
         self.corretas = len([question for question in questions if question.chosen_letter == question.correct_letter])

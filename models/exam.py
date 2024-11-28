@@ -1,7 +1,8 @@
 from dataclasses import dataclass, field
 from random import shuffle
-from models.question import Question
 from templates.base_grading import BaseGradingTemplate
+
+from .question import Question
 
 @dataclass
 class Exam:

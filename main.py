@@ -1,4 +1,5 @@
 import json
+from math import floor
 from models.exam import Exam
 from templates.base_grading import BaseGradingTemplate
 from templates.percentage_grading import PercentageGradingTemplate
@@ -7,7 +8,6 @@ from templates.final_grade_only_grading import FinalGradeOnlyGrading
 class App:
     _instance: "App | None" = None
     
-    # Singleton pattern
     def __new__(cls, *args, **kwargs) -> "App":
         if cls._instance is None:
             cls._instance = super(App, cls).__new__(cls, *args, **kwargs)
@@ -18,12 +18,10 @@ class App:
         if App._instance is not None:
             return
         
-        self.exam: Exam | None = None
-        
-    def load_file(self, questions_file_name: str) -> bool:
+    def _load_file(self, questions_file_name: str) -> bool:
         try:
             with open(questions_file_name, "r", encoding="utf-8") as file:
-                self.exam = Exam.from_dict(json.load(file))
+                self._exam = Exam.from_dict(json.load(file))
                 return True
         except FileNotFoundError:
             print("Erro ao tentar carregar arquivo de exame: Arquivo não encontrado")
@@ -35,26 +33,19 @@ class App:
             print(f"Erro ao tentar carregar arquivo de exame: {e}")
             return False
             
-        
-    # Facade pattern  
     def take_exam(self, file_name: str, *, limit: int = -1) -> None:
         try:
+            limit = floor(limit)
+            
             if limit < -1:
                 print("O limite de questões deve ser maior ou igual a -1")
                 return
             
-            loaded = self.load_file(file_name)
+            self._load_file(file_name)
             
-            if not loaded:
-                return
-            
-            if self.exam is None:
-                print("Nenhum exame foi carregado")
-                return
-            
-            self.exam.shuffle()
-            self.exam.ask(limit)
-            self.exam.grade(FinalGradeOnlyGrading(limit=limit))
+            self._exam.shuffle()
+            self._exam.ask(limit)
+            self._exam.grade(FinalGradeOnlyGrading(limit=limit))
         except Exception as e:
             print(f"Erro ao tentar realizar o exame: {e}")
 

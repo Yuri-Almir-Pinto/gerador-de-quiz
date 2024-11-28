@@ -1,6 +1,7 @@
 from dataclasses import dataclass, field
-from models.alternative import Alternative
 from random import shuffle
+
+from .alternative import Alternative
 
 def letter_to_number(value: str) -> int:
     if len(value) == 0: return 0x20
