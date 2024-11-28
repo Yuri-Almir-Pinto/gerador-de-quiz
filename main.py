@@ -1,6 +1,8 @@
 import json
 from models.exam import Exam
 from templates.base_grading import BaseGradingTemplate
+from templates.percentage_grading import PercentageGradingTemplate
+from templates.final_grade_only_grading import FinalGradeOnlyGrading
 
 class App:
     _instance: "App | None" = None
@@ -52,7 +54,7 @@ class App:
             
             self.exam.shuffle()
             self.exam.ask(limit)
-            self.exam.grade(BaseGradingTemplate(limit=limit))
+            self.exam.grade(FinalGradeOnlyGrading(limit=limit))
         except Exception as e:
             print(f"Erro ao tentar realizar o exame: {e}")
 

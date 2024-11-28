@@ -1,8 +1,10 @@
 from models.question import Question
 
 class BaseGradingTemplate:
-    def __init__(self, *, limit: int = -1) -> None:
+    def __init__(self, *, limit: int = -1,
+                 pause_after_each_correction: bool = True) -> None:
         self.limit = limit
+        self.pause_after_each_correction: bool = pause_after_each_correction
 
     def __call__(self, questions: list[Question]) -> None:
         self.total = self.limit + 1 if self.limit < len(questions) else len(questions)
@@ -23,9 +25,11 @@ class BaseGradingTemplate:
             if index > self.limit and self.limit != -1:
                 break
             
-            self.before_show_question_hook()
+            self.before_show_correction_hook()
             self.show_correction(question)
-            self.after_show_question_hook()
+            if self.pause_after_each_correction:
+                self.pause()
+            self.after_show_correction_hook()
     
     def show_correction(self, question: Question):
         print(f"Questão: {question.title}")
@@ -38,11 +42,14 @@ class BaseGradingTemplate:
         print(f"Questões corretas: {self.corretas}")
         print(f"Questões erradas: {self.erradas}")
         
-    def before_show_question_hook(self):
+    def pause(self):
+        input(f"{"-"*5}Pressione enter para continuar...{"-"*5}")
+        
+    def before_show_correction_hook(self):
         pass
     
-    def after_show_question_hook(self):
-        input(f"{"-"*5}Pressione enter para continuar...{"-"*5}")
+    def after_show_correction_hook(self):
+        pass
     
     def begin_grading_hook(self):
         pass

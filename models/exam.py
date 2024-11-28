@@ -26,7 +26,7 @@ class Exam:
             
             question.ask()
         
-        print("\n\n")
+        print("\n")
         
     def grade(self, grading_template: BaseGradingTemplate) -> None:
         grading_template(self.questions)
