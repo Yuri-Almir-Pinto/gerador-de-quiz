@@ -1,6 +1,5 @@
 from dataclasses import dataclass, field
 from models.alternative import Alternative
-from models.choice import Choice
 from random import shuffle
 
 def letter_to_number(value: str) -> int:
@@ -14,13 +13,15 @@ def number_to_letter(value: int) -> str:
 class Question:
     title: str
     alternatives: list[Alternative] = field(default_factory=list)
-    chosen: Choice | None = None
+    chosen_letter: str | None = None
+    correct_letter: str = ""
     
     def __post_init__(self) -> None:
         self.shuffle()
         
-        for alternative in self.alternatives:
+        for index, alternative in enumerate(self.alternatives):
             if alternative.correct:
+                self.correct_letter = number_to_letter(index)
                 return
         
         raise ValueError("Nenhuma alternativa correta foi encontrada")
@@ -35,17 +36,12 @@ class Question:
         
         return Question(title=title, alternatives=alternatives)
     
-    def pick(self, alternative: str) -> Choice | None:
+    def pick(self, alternative: str) -> None:
         if letter_to_number(alternative) > len(self.alternatives):
             return None
         
-        correct_letter = self.alternatives.index([alternative for alternative in self.alternatives if alternative.correct][0])
-        
-        self.chosen = Choice(alternative=self.alternatives[letter_to_number(alternative)], 
-                             chosen_letter=alternative, 
-                             correct_letter=number_to_letter(correct_letter))
-        
-        return self.chosen
+        self.correct_letter = number_to_letter(self.alternatives.index([alternative for alternative in self.alternatives if alternative.correct][0]))
+        self.chosen_letter = alternative.upper()
     
     def shuffle(self) -> None:
         shuffle(self.alternatives)

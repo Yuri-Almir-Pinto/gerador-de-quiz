@@ -1,0 +1,8 @@
+# Ignore VSCode settings directory
+.vscode/
+
+# Ignore Python bytecode and cache directories
+__pycache__/
+*.pyc
+*.pyo
+*.pyd

@@ -1,7 +1,7 @@
 from dataclasses import dataclass, field
 from random import shuffle
 from models.question import Question
-from strategies.base_grading import BaseGradingStrategy
+from templates.base_grading import BaseGradingTemplate
 
 @dataclass
 class Exam:
@@ -28,5 +28,5 @@ class Exam:
         
         print("\n\n")
         
-    def grade(self, grading_strategy: BaseGradingStrategy) -> None:
-        grading_strategy(self.questions)
+    def grade(self, grading_template: BaseGradingTemplate) -> None:
+        grading_template(self.questions)

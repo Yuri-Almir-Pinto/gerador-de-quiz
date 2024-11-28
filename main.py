@@ -1,7 +1,6 @@
 import json
 from models.exam import Exam
-from strategies.simple_grading import SimpleGradingStrategy
-from strategies.percentage_grading import PercentageGradingStrategy
+from templates.base_grading import BaseGradingTemplate
 
 class App:
     _instance: "App | None" = None
@@ -53,7 +52,7 @@ class App:
             
             self.exam.shuffle()
             self.exam.ask(limit)
-            self.exam.grade(PercentageGradingStrategy(limit=limit))
+            self.exam.grade(BaseGradingTemplate(limit=limit))
         except Exception as e:
             print(f"Erro ao tentar realizar o exame: {e}")
 
