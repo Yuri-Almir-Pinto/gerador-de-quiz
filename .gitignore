@@ -1,6 +1,6 @@
 # Ignore VSCode settings directory
 .vscode/
-
+ignore/
 # Ignore Python bytecode and cache directories
 __pycache__/
 *.pyc
