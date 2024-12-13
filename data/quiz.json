@@ -1,0 +1,423 @@
+[
+    {
+        "title": "O que é uma variável em programação?",
+        "alternatives": [
+            {
+                "description": "Uma função que executa uma ação",
+                "correct": false
+            },
+            {
+                "description": "Um tipo de dado que armazena informações",
+                "correct": true
+            },
+            {
+                "description": "Um comando que termina o programa",
+                "correct": false
+            },
+            {
+                "description": "Uma classe que define objetos",
+                "correct": false
+            }
+        ]
+    },
+    {
+        "title": "O que significa 'HTML'?",
+        "alternatives": [
+            {
+                "description": "HyperText Markup Language",
+                "correct": true
+            },
+            {
+                "description": "High Text Markup Language",
+                "correct": false
+            },
+            {
+                "description": "Hyper Transfer Machine Language",
+                "correct": false
+            },
+            {
+                "description": "HyperText Machine Language",
+                "correct": false
+            }
+        ]
+    },
+    {
+        "title": "Qual desses é um tipo de dado primitivo em Python?",
+        "alternatives": [
+            {
+                "description": "List",
+                "correct": false
+            },
+            {
+                "description": "String",
+                "correct": true
+            },
+            {
+                "description": "Dictionary",
+                "correct": false
+            },
+            {
+                "description": "Tuple",
+                "correct": false
+            }
+        ]
+    },
+    {
+        "title": "O que faz o comando 'print' em Python?",
+        "alternatives": [
+            {
+                "description": "Exibe uma mensagem na tela",
+                "correct": true
+            },
+            {
+                "description": "Define uma variável",
+                "correct": false
+            },
+            {
+                "description": "Cria um arquivo",
+                "correct": false
+            },
+            {
+                "description": "Inicia um loop",
+                "correct": false
+            }
+        ]
+    },
+    {
+        "title": "O que é um 'algoritmo'?",
+        "alternatives": [
+            {
+                "description": "Uma série de passos para resolver um problema",
+                "correct": true
+            },
+            {
+                "description": "Um tipo de linguagem de programação",
+                "correct": false
+            },
+            {
+                "description": "Uma variável de armazenamento de dados",
+                "correct": false
+            },
+            {
+                "description": "Uma estrutura de dados",
+                "correct": false
+            }
+        ]
+    },
+    {
+        "title": "Qual é o propósito de um 'for loop'?",
+        "alternatives": [
+            {
+                "description": "Executar uma tarefa repetidamente",
+                "correct": true
+            },
+            {
+                "description": "Realizar uma operação matemática",
+                "correct": false
+            },
+            {
+                "description": "Definir uma variável",
+                "correct": false
+            },
+            {
+                "description": "Exibir uma mensagem",
+                "correct": false
+            }
+        ]
+    },
+    {
+        "title": "Qual dessas linguagens de programação é usada para criar websites?",
+        "alternatives": [
+            {
+                "description": "Java",
+                "correct": false
+            },
+            {
+                "description": "JavaScript",
+                "correct": true
+            },
+            {
+                "description": "C#",
+                "correct": false
+            },
+            {
+                "description": "Swift",
+                "correct": false
+            }
+        ]
+    },
+    {
+        "title": "O que é 'Big Data'?",
+        "alternatives": [
+            {
+                "description": "Conjunto de dados de grande volume e complexidade",
+                "correct": true
+            },
+            {
+                "description": "Uma ferramenta de processamento de dados simples",
+                "correct": false
+            },
+            {
+                "description": "Uma técnica para otimizar algoritmos",
+                "correct": false
+            },
+            {
+                "description": "Uma linguagem de programação para análise de dados",
+                "correct": false
+            }
+        ]
+    },
+    {
+        "title": "Qual é a principal função de um servidor web?",
+        "alternatives": [
+            {
+                "description": "Armazenar arquivos e enviar respostas para requisições de usuários",
+                "correct": true
+            },
+            {
+                "description": "Armazenar dados locais de usuários",
+                "correct": false
+            },
+            {
+                "description": "Gerenciar o banco de dados",
+                "correct": false
+            },
+            {
+                "description": "Executar código JavaScript no lado do cliente",
+                "correct": false
+            }
+        ]
+    },
+    {
+        "title": "O que é 'Git'?",
+        "alternatives": [
+            {
+                "description": "Uma ferramenta de controle de versão",
+                "correct": true
+            },
+            {
+                "description": "Uma linguagem de programação",
+                "correct": false
+            },
+            {
+                "description": "Uma biblioteca para manipulação de arquivos",
+                "correct": false
+            },
+            {
+                "description": "Uma plataforma de computação em nuvem",
+                "correct": false
+            }
+        ]
+    },
+    {
+        "title": "Qual é a função do 'compilador' em programação?",
+        "alternatives": [
+            {
+                "description": "Transformar código-fonte em código de máquina",
+                "correct": true
+            },
+            {
+                "description": "Armazenar arquivos temporários",
+                "correct": false
+            },
+            {
+                "description": "Criar uma interface gráfica",
+                "correct": false
+            },
+            {
+                "description": "Exibir mensagens de erro",
+                "correct": false
+            }
+        ]
+    },
+    {
+        "title": "O que é um 'array' em programação?",
+        "alternatives": [
+            {
+                "description": "Uma variável que armazena múltiplos valores",
+                "correct": true
+            },
+            {
+                "description": "Uma função que manipula dados",
+                "correct": false
+            },
+            {
+                "description": "Uma classe que define objetos",
+                "correct": false
+            },
+            {
+                "description": "Uma operação matemática",
+                "correct": false
+            }
+        ]
+    },
+    {
+        "title": "O que significa 'API'?",
+        "alternatives": [
+            {
+                "description": "Application Programming Interface",
+                "correct": true
+            },
+            {
+                "description": "Advanced Programming Interface",
+                "correct": false
+            },
+            {
+                "description": "Application Process Integration",
+                "correct": false
+            },
+            {
+                "description": "Automated Program Interface",
+                "correct": false
+            }
+        ]
+    },
+    {
+        "title": "Qual desses é um sistema operacional de código aberto?",
+        "alternatives": [
+            {
+                "description": "Windows",
+                "correct": false
+            },
+            {
+                "description": "Linux",
+                "correct": true
+            },
+            {
+                "description": "macOS",
+                "correct": false
+            },
+            {
+                "description": "Android",
+                "correct": false
+            }
+        ]
+    },
+    {
+        "title": "O que faz a linguagem 'SQL'?",
+        "alternatives": [
+            {
+                "description": "Manipula e consulta bancos de dados",
+                "correct": true
+            },
+            {
+                "description": "Cria interfaces gráficas",
+                "correct": false
+            },
+            {
+                "description": "Controla servidores web",
+                "correct": false
+            },
+            {
+                "description": "Desenvolve aplicativos móveis",
+                "correct": false
+            }
+        ]
+    },
+    {
+        "title": "O que é 'Machine Learning'?",
+        "alternatives": [
+            {
+                "description": "Uma técnica que permite que computadores aprendam com dados",
+                "correct": true
+            },
+            {
+                "description": "Uma ferramenta para criar gráficos interativos",
+                "correct": false
+            },
+            {
+                "description": "Um software de design gráfico",
+                "correct": false
+            },
+            {
+                "description": "Um tipo de linguagem de programação",
+                "correct": false
+            }
+        ]
+    },
+    {
+        "title": "O que é 'JavaScript'?",
+        "alternatives": [
+            {
+                "description": "Uma linguagem usada principalmente para desenvolvimento web",
+                "correct": true
+            },
+            {
+                "description": "Uma linguagem de programação de sistemas",
+                "correct": false
+            },
+            {
+                "description": "Uma biblioteca de manipulação de dados",
+                "correct": false
+            },
+            {
+                "description": "Um framework de desenvolvimento de jogos",
+                "correct": false
+            }
+        ]
+    },
+    {
+        "title": "O que significa a sigla 'CSS'?",
+        "alternatives": [
+            {
+                "description": "Cascading Style Sheets",
+                "correct": true
+            },
+            {
+                "description": "Coded Style Scripts",
+                "correct": false
+            },
+            {
+                "description": "Creative Software Solutions",
+                "correct": false
+            },
+            {
+                "description": "Computation Sequence Systems",
+                "correct": false
+            }
+        ]
+    },
+    {
+        "title": "Qual é o propósito de uma 'API RESTful'?",
+        "alternatives": [
+            {
+                "description": "Facilitar a comunicação entre sistemas web",
+                "correct": true
+            },
+            {
+                "description": "Gerenciar bancos de dados em sistemas locais",
+                "correct": false
+            },
+            {
+                "description": "Definir estruturas de dados complexas",
+                "correct": false
+            },
+            {
+                "description": "Criar interfaces gráficas de usuário",
+                "correct": false
+            }
+        ]
+    },
+    {
+        "title": "O que é 'Docker'?",
+        "alternatives": [
+            {
+                "description": "Uma plataforma para criar e gerenciar containers",
+                "correct": true
+            },
+            {
+                "description": "Uma linguagem de programação para desenvolvimento web",
+                "correct": false
+            },
+            {
+                "description": "Um banco de dados para armazenamento em nuvem",
+                "correct": false
+            },
+            {
+                "description": "Uma ferramenta para design gráfico",
+                "correct": false
+            }
+        ]
+    }
+    
+]

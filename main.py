@@ -5,6 +5,7 @@ from templates.base_grading import BaseGradingTemplate
 from templates.percentage_grading import PercentageGradingTemplate
 from templates.final_grade_only_grading import FinalGradeOnlyGrading
 
+# 1. Singleton
 class App:
     _instance: "App | None" = None
     
@@ -32,7 +33,8 @@ class App:
         except Exception as e:
             print(f"Erro ao tentar carregar arquivo de exame: {e}")
             return False
-            
+    
+    # 2. Facade (Fazer esse o template)
     def take_exam(self, file_name: str, *, limit: int = -1) -> None:
         try:
             limit = floor(limit)
@@ -45,7 +47,7 @@ class App:
             
             self._exam.shuffle()
             self._exam.ask(limit)
-            self._exam.grade(FinalGradeOnlyGrading(limit=limit))
+            self._exam.grade(PercentageGradingTemplate(limit=limit))
         except Exception as e:
             print(f"Erro ao tentar realizar o exame: {e}")
 
@@ -53,5 +55,5 @@ if __name__ == "__main__":
     app = App()
     
     print(f"{"-"*5} Iniciando teste... {"-"*5}")
-    app.take_exam("data/questions.json", limit=2)
+    app.take_exam("data/quiz.json", limit=2)
     print(f"{"-"*5} Teste finalizado {"-"*5}")
