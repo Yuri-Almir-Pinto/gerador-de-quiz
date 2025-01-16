@@ -1,9 +1,13 @@
 import json
 from math import floor
-from models.exam import Exam
-from templates.base_grading import BaseGradingTemplate
-from templates.percentage_grading import PercentageGradingTemplate
-from templates.final_grade_only_grading import FinalGradeOnlyGrading
+from models.quiz import Quiz
+
+# Padrões de projeto utilizados:
+# 1. Singleton (Ter apenas uma instância da classe App)
+# 2. Facade (Utilizado para realizar o exame)
+# 3. Factory (Para criar as questões)
+# 4. Builder (Para instanciar e configurar o App)
+# 5. Strategy (Para a forma de perguntar as questões)
 
 # 1. Singleton
 class App:
@@ -22,7 +26,7 @@ class App:
     def _load_file(self, questions_file_name: str) -> bool:
         try:
             with open(questions_file_name, "r", encoding="utf-8") as file:
-                self._exam = Exam.from_dict(json.load(file))
+                self._exam = Quiz.from_dict(json.load(file))
                 return True
         except FileNotFoundError:
             print("Erro ao tentar carregar arquivo de exame: Arquivo não encontrado")
@@ -34,20 +38,20 @@ class App:
             print(f"Erro ao tentar carregar arquivo de exame: {e}")
             return False
     
-    # 2. Facade (Fazer esse o template)
-    def take_exam(self, file_name: str, *, limit: int = -1) -> None:
+    # 2. Facade
+    def take_exam(self, file_name: str, *, limit: int = 0) -> None:
         try:
             limit = floor(limit)
             
-            if limit < -1:
-                print("O limite de questões deve ser maior ou igual a -1")
+            if limit < 0:
+                print("O limite de questões deve ser maior ou igual a 0")
                 return
             
             self._load_file(file_name)
             
             self._exam.shuffle()
             self._exam.ask(limit)
-            self._exam.grade(PercentageGradingTemplate(limit=limit))
+            self._exam.grade(limit=limit)
         except Exception as e:
             print(f"Erro ao tentar realizar o exame: {e}")
 
