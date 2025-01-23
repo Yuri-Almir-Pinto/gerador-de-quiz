@@ -1,0 +1,65 @@
+[
+    {
+        "title": "Quais das seguintes opções são linguagens de programação?",
+        "alternatives": [
+            {
+                "description": "Python",
+                "correct": true
+            },
+            {
+                "description": "HTML",
+                "correct": false
+            },
+            {
+                "description": "Java",
+                "correct": true
+            },
+            {
+                "description": "CSS",
+                "correct": false
+            }
+        ]
+    },
+    {
+        "title": "Quais das seguintes tecnologias são usadas no desenvolvimento web?",
+        "alternatives": [
+            {
+                "description": "HTML",
+                "correct": true
+            },
+            {
+                "description": "CSS",
+                "correct": true
+            },
+            {
+                "description": "Python",
+                "correct": true
+            },
+            {
+                "description": "Photoshop",
+                "correct": false
+            }
+        ]
+    },
+    {
+        "title": "Quais desses são sistemas operacionais?",
+        "alternatives": [
+            {
+                "description": "Windows",
+                "correct": true
+            },
+            {
+                "description": "Linux",
+                "correct": true
+            },
+            {
+                "description": "MacOS",
+                "correct": true
+            },
+            {
+                "description": "Oracle",
+                "correct": false
+            }
+        ]
+    }
+]

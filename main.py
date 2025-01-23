@@ -59,5 +59,5 @@ if __name__ == "__main__":
     app = App()
     
     print(f"{"-"*5} Iniciando teste... {"-"*5}")
-    app.take_exam("data/quiz.json", limit=2)
+    app.take_exam("data/questions.json")
     print(f"{"-"*5} Teste finalizado {"-"*5}")

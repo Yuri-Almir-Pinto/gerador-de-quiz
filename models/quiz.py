@@ -37,7 +37,7 @@ class Quiz:
             if limit != 0 and index > limit:
                 break
             
-            print(f"{question.title}: \n{question.points}/{question.points} - {'Correto' if question.correct else 'Incorreto'}")
+            print(f"{question.title}: \n{question.points:.1f}/1 - {question.correct}")
             input("- Pressione Enter para continuar -")
             print("-"*10)
         
