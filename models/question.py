@@ -74,9 +74,6 @@ class SingleChoiceQuestion(QuestionBase):
         shuffle(self._alternatives)
     
     def pick(self, alternative: str) -> None:
-        if _letter_to_number(alternative) > len(self._alternatives):
-            return
-        
         self.chosen_letter = alternative.upper()
 
     def shuffle(self) -> None:

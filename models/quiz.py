@@ -16,12 +16,12 @@ class Quiz:
     def shuffle(self) -> None:
         shuffle(self.questions)
         
-    def ask(self, limit: int = -0) -> None:
+    def ask(self, *, limit: int = 0) -> None:
         if len(self.questions) == 0:
             print("Nenhuma questão foi encontrada no exame.")
         
         for index, question in enumerate(self.questions):
-            if index > limit and limit != 0:
+            if limit != 0 and index >= limit:
                 break
             
             question.ask()
@@ -34,7 +34,7 @@ class Quiz:
         
         print("-"*10)
         for index, question in enumerate(self.questions):
-            if limit != 0 and index > limit:
+            if limit != 0 and index >= limit:
                 break
             
             print(f"{question.title}: \n{question.points:.1f}/1 - {question.correct}")

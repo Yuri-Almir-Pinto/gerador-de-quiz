@@ -50,7 +50,7 @@ class App:
             self._load_file(file_name)
             
             self._exam.shuffle()
-            self._exam.ask(limit)
+            self._exam.ask(limit=limit)
             self._exam.grade(limit=limit)
         except Exception as e:
             print(f"Erro ao tentar realizar o exame: {e}")
@@ -59,5 +59,5 @@ if __name__ == "__main__":
     app = App()
     
     print(f"{"-"*5} Iniciando teste... {"-"*5}")
-    app.take_exam("data/questions.json")
+    app.take_exam("data/questions.json", limit=2)
     print(f"{"-"*5} Teste finalizado {"-"*5}")
