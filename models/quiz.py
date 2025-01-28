@@ -33,12 +33,16 @@ class Quiz:
             print("Nenhuma questão foi encontrada no exame.")
         
         print("-"*10)
+        total: float = 0
         for index, question in enumerate(self.questions):
             if limit != 0 and index >= limit:
                 break
+            
+            total += question.points
             
             print(f"{question.title}: \n{question.points:.1f}/1 - {question.correct}")
             input("- Pressione Enter para continuar -")
             print("-"*10)
         
         print()
+        print(f"Pontuação final: {((total/(len(self.questions) if limit == -1 else limit))*100):.0f}")
