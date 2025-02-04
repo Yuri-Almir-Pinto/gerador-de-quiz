@@ -1,168 +1,182 @@
-from enum import Enum
-from random import shuffle
 from abc import ABC, abstractmethod
+import types
+from enums.question_feedback import QuestionFeedback
+from models.alternative import Alternative
 
-from .alternative import Alternative
+def _letter_to_number(letter: str) -> int:
+    return ord(letter.upper()) - ord("A")
 
-def _letter_to_number(value: str) -> int:
-    if len(value) == 0: return 0x20
-    return ord(value.upper()) - 65
-
-def _number_to_letter(value: int) -> str:
-    return chr(value + 65)
-
-class QuestionFeedback(Enum):
-    CORRECT = 1
-    INCORRECT = 2
-    PARTIAL = 3
+def _number_to_letter(number: int) -> str:
+    return chr(number + 65).upper()
     
-    def __str__(self) -> str:
-        match(self):
-            case self.CORRECT:
-                return "Correto"
-            case self.INCORRECT:
-                return "Incorreto"
-            case self.PARTIAL:
-                return "Parcial"
-            
-        raise Exception("Valor inválido para representação de QuestionFeedback.")
-    
-
-class QuestionBase(ABC):
-    def __init__(self, *, title: str, alternatives: list[Alternative]) -> None:
+class Question:
+    def __init__(self, *, title: str, 
+                 alternatives: list[Alternative], 
+                 asking_strategy: "QuestionAskingStrategy",
+                 grading_strategy: "QuestionGradingStrategy") -> None:
         self._title = title
         self._alternatives = alternatives
+        self._asking_strategy = asking_strategy
+        self._grading_strategy = grading_strategy
         
-    @property
-    @abstractmethod
-    def title(self) -> str: pass
-    
-    @property
-    @abstractmethod
-    def points(self) -> float: pass
-    
-    @property
-    @abstractmethod
-    def correct(self) -> QuestionFeedback: pass
-    
-    # 5. Strategy
-    @abstractmethod
-    def ask(self) -> tuple[QuestionFeedback, float]: 
-        """Faz a pergunta ao usuário, e retorna se a resposta está correta e quantos pontos a questão valeu"""
-        pass
-    
-    # 4. Factory
-    @staticmethod
-    def from_dict(data: dict) -> "QuestionBase":
-        if "title" in data and "alternatives" in data:
-            # Check if only one is correct
-            quantity_correct = sum([1 for alternative in data["alternatives"] if alternative["correct"]])
-            
-            if quantity_correct == 1:
-                return SingleChoiceQuestion(title=data["title"], alternatives=[Alternative.from_dict(alternative) for alternative in data["alternatives"]])
-            if quantity_correct > 1:
-                return MultipleChoiceQuestion(title=data["title"], alternatives=[Alternative.from_dict(alternative) for alternative in data["alternatives"]])
-            
-        
-        raise ValueError("O dicionário passado não contém todos os campos necessários para criar uma questão.")
-        
-
-class SingleChoiceQuestion(QuestionBase):
-    def __init__(self, *, title: str, alternatives: list[Alternative]) -> None:
-        super().__init__(title=title, alternatives=alternatives)
-        
-        shuffle(self._alternatives)
-    
-    def pick(self, alternative: str) -> None:
-        self.chosen_letter = alternative.upper()
-
-    def shuffle(self) -> None:
-        shuffle(self._alternatives)
-
-    def ask(self) -> tuple[QuestionFeedback, float]:
-        print(self.title)
-        
-        for index, alternative in enumerate(self._alternatives):
-            print(f"{_number_to_letter(index)} - {alternative.description}")
-        
-        escolha = input("Escolha: ")
-        
-        self.pick(escolha)
-        
-        return self.correct, self.points
-        
-    @property
-    def points(self) -> float:
-        return 1 if self.correct_letter == self.chosen_letter else 0
-
-    @property
-    def correct(self) -> QuestionFeedback:
-        return QuestionFeedback.CORRECT if self.points == 1 else QuestionFeedback.INCORRECT
-    
     @property
     def title(self) -> str:
         return self._title
-        
-    @property
-    def correct_letter(self) -> str:
-        for index, alternative in enumerate(self._alternatives):
-            if alternative.correct:
-                return _number_to_letter(index)
-            
-        raise ValueError("Nenhuma alternativa correta foi encontrada")
     
-class MultipleChoiceQuestion(QuestionBase):
-    def __init__(self, *, title: str, alternatives: list[Alternative]) -> None:
-        super().__init__(title=title, alternatives=alternatives)
+    @property
+    def alternatives(self) -> list[Alternative]:
+        return self._alternatives
+    
+    @staticmethod
+    def from_dict(data: dict) -> "Question":
+        if "title" not in data or type(data["title"]) != str:
+            raise ValueError("O dicionário passado não contém a chave 'title' ou o valor associado não é uma string.")
         
-        shuffle(self._alternatives)
+        if "alternatives" not in data or type(data["alternatives"]) != list:
+            raise ValueError("O dicionário passado não contém a chave 'alternatives' ou o valor associado não é uma lista.")
         
-    def ask(self) -> tuple[QuestionFeedback, float]:
-        print(self.title)
+        return Question(title=data["title"], 
+                        alternatives=[Alternative.from_dict(alternative) for alternative in data["alternatives"]],
+                        asking_strategy=QuestionAskingFactory.create(data),
+                        grading_strategy=QuestionGradingFactory.create(data))
         
-        for index, alternative in enumerate(self._alternatives):
+    def ask(self):
+        self._results = self._asking_strategy.ask(self)
+        
+    def grade(self) -> tuple[QuestionFeedback, float]:
+        return self._grading_strategy.grade(self._results)
+
+# 5. Strategy
+class QuestionAskingStrategy(ABC):
+    @abstractmethod
+    def ask(self, question: Question) -> dict:
+        pass
+    
+class SingleChoiceAskingStrategy(QuestionAskingStrategy):
+    def ask(self, question: Question) -> dict:
+        print(question.title)
+        
+        correct_letter: str = ""
+        
+        for index, alternative in enumerate(question.alternatives):
             print(f"{_number_to_letter(index)} - {alternative.description}")
             
+            if alternative.correct:
+                correct_letter = _number_to_letter(index)
+        
+        escolha = input("Escolha: ")
+        
+        return { "choice": escolha.upper(), "correct_letter": correct_letter }
+    
+class MultipleChoiceAskingStrategy(QuestionAskingStrategy):
+    def ask(self, question: Question) -> dict:
+        print(question.title)
+        
+        correct_letters: list[str] = []
+        
+        for index, alternative in enumerate(question.alternatives):
+            print(f"{_number_to_letter(index)} - {alternative.description}")
+            
+            if alternative.correct:
+                correct_letters.append(_number_to_letter(index))
+        
         print("Escolha (Pressione 'Enter' para finalizar):")
         
-        self.chosen: list[str] = []
+        escolhas: list[str] = []
         while True:
             escolha = input()
             
             if escolha == "":
                 break
             
-            if _letter_to_number(escolha) > len(self._alternatives):
+            if _letter_to_number(escolha) >= len(question.alternatives):
                 continue
             
-            self.chosen.append(escolha.upper())
+            escolhas.append(escolha.upper())
             
-        return self.correct, self.points
-            
-    @property
-    def points(self) -> float:
+        return { "choices": escolhas, "correct_letters": correct_letters }
+
+# 5. Strategy
+class QuestionGradingStrategy(ABC):
+    @abstractmethod
+    def grade(self, result: dict) -> tuple[QuestionFeedback, float]:
+        pass
+    
+class SingleChoiceGradingStrategy(QuestionGradingStrategy):
+    def grade(self, result: dict) -> tuple[QuestionFeedback, float]:
+        if "choice" not in result or type(result["choice"]) != str:
+            raise ValueError("O dicionário passado não contém a chave 'choice' ou o valor associado não é uma string.")
+        
+        if "correct_letter" not in result or type(result["correct_letter"]) != str:
+            raise ValueError("O dicionário passado não contém a chave 'correct_letter' ou o valor associado não é uma string.")
+        
+        choice, correct_letter = result["choice"], result["correct_letter"]
+        
+        if correct_letter == choice:
+            return QuestionFeedback.CORRECT, 1
+        
+        return QuestionFeedback.INCORRECT, 0
+    
+class MultipleChoiceGradingStrategy(QuestionGradingStrategy):
+    def grade(self, result: dict) -> tuple[QuestionFeedback, float]:
+        if "choices" not in result or type(result["choices"]) != list:
+            raise ValueError("O dicionário passado não contém a chave 'choices' ou o valor associado não é uma lista.")
+        
+        if "correct_letters" not in result or type(result["correct_letters"]) != list:
+            raise ValueError("O dicionário passado não contém a chave 'correct_letters' ou o valor associado não é uma lista.")
+        
+        choices, correct_letters = result["choices"], result["correct_letters"]
+        
         points: float = 0
-        for correct in self.correct_letters:
-            if correct in self.chosen:
-                points += 1 / len(self.correct_letters)
+        for correct in correct_letters:
+            if correct in choices:
+                points += 1 / len(correct_letters)
                 
-        return points
-    
-    @property
-    def correct(self) -> QuestionFeedback:
-        if self.points == 1:
-            return QuestionFeedback.CORRECT
-        if self.points == 0: 
-            return QuestionFeedback.INCORRECT
+        if points == 1:
+            return QuestionFeedback.CORRECT, 1
+        if points == 0:
+            return QuestionFeedback.INCORRECT, 0
         
-        return QuestionFeedback.PARTIAL
-    
-    @property
-    def title(self) -> str:
-        return self._title
-            
-    @property
-    def correct_letters(self) -> list[str]:
-        return [_number_to_letter(index) for index, alternative in enumerate(self._alternatives) if alternative.correct]
-        
-        
+        return QuestionFeedback.PARTIAL, points
+
+# 3. Factory
+class QuestionGradingFactory:
+    _registry: dict[str, types.FunctionType] = {}
+
+    @staticmethod
+    def register(question_type: str, constructor):
+        QuestionGradingFactory._registry[question_type] = constructor
+
+    @staticmethod
+    def create(data: dict) -> QuestionGradingStrategy:
+        if "type" not in data:
+            raise ValueError("O dicionário deve conter um campo 'type' para identificar a questão.")
+
+        if data["type"] not in QuestionGradingFactory._registry:
+            raise ValueError(f"Tipo de questão desconhecido: {data['type']}")
+
+        return QuestionGradingFactory._registry[data["type"]]()
+
+QuestionGradingFactory.register("single", SingleChoiceGradingStrategy)
+QuestionGradingFactory.register("multiple", MultipleChoiceGradingStrategy)
+
+# 3. Factory
+class QuestionAskingFactory:
+    _registry: dict[str, types.FunctionType] = {}
+
+    @staticmethod
+    def register(question_type: str, constructor):
+        QuestionAskingFactory._registry[question_type] = constructor
+
+    @staticmethod
+    def create(data: dict) -> QuestionAskingStrategy:
+        if "type" not in data:
+            raise ValueError("O dicionário deve conter um campo 'type' para identificar a questão.")
+
+        if data["type"] not in QuestionAskingFactory._registry:
+            raise ValueError(f"Tipo de questão desconhecido: {data['type']}")
+
+        return QuestionAskingFactory._registry[data["type"]]()
+
+QuestionAskingFactory.register("single", SingleChoiceAskingStrategy)
+QuestionAskingFactory.register("multiple", MultipleChoiceAskingStrategy)

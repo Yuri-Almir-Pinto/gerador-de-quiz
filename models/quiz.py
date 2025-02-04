@@ -1,15 +1,15 @@
 from dataclasses import dataclass, field
 from random import shuffle
 
-from .question import QuestionBase
+from .question import Question
 
 @dataclass
 class Quiz:
-    questions: list[QuestionBase] = field(default_factory=list)
+    questions: list[Question] = field(default_factory=list)
     
     @staticmethod
     def from_dict(data: dict) -> "Quiz":
-        questions = [QuestionBase.from_dict(question) for question in data]
+        questions = [Question.from_dict(question) for question in data]
         
         return Quiz(questions=questions)
     
@@ -38,9 +38,11 @@ class Quiz:
             if limit != 0 and index >= limit:
                 break
             
-            total += question.points
+            feedback, points = question.grade()
             
-            print(f"{question.title}: \n{question.points:.1f}/1 - {question.correct}")
+            total += points
+                        
+            print(f"{question.title}: \n{points:.1f}/1 - {feedback}")
             input("- Pressione Enter para continuar -")
             print("-"*10)
         
