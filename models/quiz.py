@@ -1,21 +1,24 @@
 from dataclasses import dataclass, field
 from random import shuffle
 
-from .question import QuestionBase
+from decorators.time_log import timed_and_logged
+
+from .question import Question
 
 @dataclass
 class Quiz:
-    questions: list[QuestionBase] = field(default_factory=list)
+    questions: list[Question] = field(default_factory=list)
     
     @staticmethod
     def from_dict(data: dict) -> "Quiz":
-        questions = [QuestionBase.from_dict(question) for question in data]
+        questions = [Question.from_dict(question) for question in data]
         
         return Quiz(questions=questions)
     
     def shuffle(self) -> None:
         shuffle(self.questions)
-        
+    
+    @timed_and_logged("Quiz", "Tempo levado para a finalização do exame")
     def ask(self, *, limit: int = 0) -> None:
         if len(self.questions) == 0:
             print("Nenhuma questão foi encontrada no exame.")
@@ -38,9 +41,11 @@ class Quiz:
             if limit != 0 and index >= limit:
                 break
             
-            total += question.points
+            feedback, points = question.grade()
             
-            print(f"{question.title}: \n{question.points:.1f}/1 - {question.correct}")
+            total += points
+                        
+            print(f"{question.title}: \n{points:.1f}/1 - {feedback}")
             input("- Pressione Enter para continuar -")
             print("-"*10)
         
