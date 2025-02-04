@@ -4,7 +4,7 @@ from models.quiz import Quiz
 
 # Padrões de projeto utilizados:
 # 1. Singleton (Ter apenas uma instância da classe App)
-# 2. Facade (Utilizado para realizar o exame)
+# 2. Decorator (Para criar um log de tempo de execução)
 # 3. Factory (Para criar as questões)
 # 4. Builder (Para instanciar e configurar o App)
 # 5. Strategy (Para a forma de perguntar as questões)
@@ -66,8 +66,7 @@ class App:
         except Exception as e:
             print(f"Erro ao tentar carregar arquivo de exame: {e}")
             return False
-    
-    # 2. Facade
+
     def take_exam(self) -> None:
         try:
             limit = floor(self._limit)

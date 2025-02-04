@@ -1,5 +1,6 @@
 from abc import ABC, abstractmethod
 import types
+from decorators.time_log import timed_and_logged
 from enums.question_feedback import QuestionFeedback
 from models.alternative import Alternative
 
@@ -31,7 +32,7 @@ class Question:
     def from_dict(data: dict) -> "Question":
         if "title" not in data or type(data["title"]) != str:
             raise ValueError("O dicionário passado não contém a chave 'title' ou o valor associado não é uma string.")
-        
+
         if "alternatives" not in data or type(data["alternatives"]) != list:
             raise ValueError("O dicionário passado não contém a chave 'alternatives' ou o valor associado não é uma lista.")
         
@@ -39,7 +40,8 @@ class Question:
                         alternatives=[Alternative.from_dict(alternative) for alternative in data["alternatives"]],
                         asking_strategy=QuestionAskingFactory.create(data),
                         grading_strategy=QuestionGradingFactory.create(data))
-        
+    
+    @timed_and_logged("Pergunta", "Tempo levado para a resposta de uma pergunta do exame")
     def ask(self):
         self._results = self._asking_strategy.ask(self)
         
@@ -51,7 +53,7 @@ class QuestionAskingStrategy(ABC):
     @abstractmethod
     def ask(self, question: Question) -> dict:
         pass
-    
+
 class SingleChoiceAskingStrategy(QuestionAskingStrategy):
     def ask(self, question: Question) -> dict:
         print(question.title)

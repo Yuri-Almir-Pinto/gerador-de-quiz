@@ -1,6 +1,8 @@
 from dataclasses import dataclass, field
 from random import shuffle
 
+from decorators.time_log import timed_and_logged
+
 from .question import Question
 
 @dataclass
@@ -15,7 +17,8 @@ class Quiz:
     
     def shuffle(self) -> None:
         shuffle(self.questions)
-        
+    
+    @timed_and_logged("Quiz", "Tempo levado para a finalização do exame")
     def ask(self, *, limit: int = 0) -> None:
         if len(self.questions) == 0:
             print("Nenhuma questão foi encontrada no exame.")
