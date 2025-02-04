@@ -9,29 +9,26 @@ from models.quiz import Quiz
 # 4. Builder (Para instanciar e configurar o App)
 # 5. Strategy (Para a forma de perguntar as questões)
 
+# 4. Builder
 class AppBuilder:
     def __init__(self) -> None:
-        self._limit: int = 0
-        self._shuffle: bool = True
-        self._questions_file_name: str = "questions.json"
+        self._app = App()
         
         
     def set_limit(self, limit: int) -> "AppBuilder":
-        self._limit = limit
+        self._app._limit = limit
         return self
     
     def set_file(self, questions_file_name: str) -> "AppBuilder":
-        self._questions_file_name = questions_file_name
+        self._app._questions_file_name = questions_file_name
         return self
     
     def set_shuffle(self, shuffle: bool) -> "AppBuilder":
-        self._shuffle = shuffle
+        self._app._shuffle = shuffle
         return self
     
     def build(self) -> "App":
-        return App(questions_file_name=self._questions_file_name, 
-                   shuffle=self._shuffle, 
-                   limit=self._limit)
+        return self._app
         
 
 # 1. Singleton
@@ -44,13 +41,13 @@ class App:
             
         return cls._instance
         
-    def __init__(self, questions_file_name: str, shuffle: bool, limit: int) -> None:
+    def __init__(self) -> None:
         if App._instance is None:
             return
         
-        self._questions_file_name = questions_file_name
-        self._shuffle = shuffle
-        self._limit = limit
+        self._questions_file_name: str = ""
+        self._shuffle: bool = True
+        self._limit: int = 0
         
     def _load_file(self) -> bool:
         try:
